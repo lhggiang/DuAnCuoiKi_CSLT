@@ -1,0 +1,14 @@
+F:\Duancuoiki\Duancuoiki\bin\Debug\net6.0\Duancuoiki.exe
+F:\Duancuoiki\Duancuoiki\bin\Debug\net6.0\Duancuoiki.deps.json
+F:\Duancuoiki\Duancuoiki\bin\Debug\net6.0\Duancuoiki.runtimeconfig.json
+F:\Duancuoiki\Duancuoiki\bin\Debug\net6.0\Duancuoiki.dll
+F:\Duancuoiki\Duancuoiki\bin\Debug\net6.0\Duancuoiki.pdb
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.GeneratedMSBuildEditorConfig.editorconfig
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.AssemblyInfoInputs.cache
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.AssemblyInfo.cs
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.csproj.CoreCompileInputs.cache
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.dll
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\refint\Duancuoiki.dll
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.pdb
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\Duancuoiki.genruntimeconfig.cache
+F:\Duancuoiki\Duancuoiki\obj\Debug\net6.0\ref\Duancuoiki.dll
