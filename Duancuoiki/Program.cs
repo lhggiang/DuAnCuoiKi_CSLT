@@ -40,9 +40,11 @@ class Program
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
                         int id;
-                        Console.WriteLine("\n2. Cập nhật thông tin nhân viên. ");
-                        Console.Write("\nNhập ID: ");
-                        id = int.Parse(Console.ReadLine());
+                        Console.Write("\nNhập ID để chỉnh sửa: ");
+                        while (int.TryParse(Console.ReadLine(), out id) == false)
+                        {
+                            Console.Write("\nVui lòng nhập lại ID để tìm kiếm: ");
+                        }
                         quanLyNhanVien.SuaThongTinNhanVien(id);
                     }
                     else
@@ -63,38 +65,56 @@ class Program
                     }
                     else
                     {
-                        Console.WriteLine("\nNhân viên cần xóa không tồn tại!");
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
                 
-                case 4: //done
+                case 4: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
-                        Console.WriteLine("\n4. Tìm kiếm nhân viên theo ID.");
+                        int id;
                         Console.Write("\nNhập ID để tìm kiếm: ");
-                        int id = int.Parse(Console.ReadLine());
+                        while (int.TryParse(Console.ReadLine(), out id) == false)
+                        {
+                            Console.Write("\nVui lòng nhập lại ID để tìm kiếm: ");
+                        }
                         List<NhanVien> searchResult = new List<NhanVien>();
-                        searchResult.Add(quanLyNhanVien.TimKiemTheoID(id)); 
-                        quanLyNhanVien.HienThiNhanVien(searchResult);
+                        searchResult.Add(quanLyNhanVien.TimKiemTheoID(id));
+                        if (searchResult[0] == null)
+                        {
+                            Console.WriteLine("Không tìm thấy nhân viên có mã số id là {0}", id);
+                        }
+                        else
+                        {
+                            quanLyNhanVien.HienThiNhanVien(searchResult);
+
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("\nNhân viên tìm kiếm không hợp lệ!");
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
-                
-                case 5: //done
+
+                case 5: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
                         Console.WriteLine("\n5. Tìm kiếm nhân viên theo tên.");
                         Console.Write("\nNhập tên để tìm kiếm: ");
                         string name = Console.ReadLine();
                         List<NhanVien> searchResult = quanLyNhanVien.TimNhanVienTheoTenNV(name);
-                        quanLyNhanVien.HienThiNhanVien(searchResult);
+                        if (searchResult.Count != 0)
+                        {
+                            quanLyNhanVien.HienThiNhanVien(searchResult);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Không tìm thấy nhân viên có tên trên");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("\nNhân viên tìm kiếm không hợp lệ!");
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
                 case 6: //done
@@ -150,8 +170,8 @@ class Program
                 case 10: //done
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
-                        Console.WriteLine("\n9. Hiển thị danh sách nhân viên.");
-                        quanLyNhanVien.HienThiNhanVien(quanLyNhanVien.getListNhanVien());
+                        Console.WriteLine("\n10. Hiển thị danh sách nhân viên.");
+                        quanLyNhanVien.HienThiToanBoNhanVien();
                     }
                     else
                     {
