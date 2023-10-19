@@ -142,18 +142,27 @@ namespace Duancuoiki
                 //dùng hàm chuẩn hóa ngày sinh
                 birth = ChuanHoaNgaySinh(birth);
                 //xử lý nhập ngày sinh ngày khi ngày bé hơn 1 và lớn hơn 31, tháng bị sai khi tháng bé hơn 1 và lớ hơn 12
-                while (int.Parse(birth.Substring(0, 2)) > 31 || int.Parse(birth.Substring(0, 2)) <= 0 || int.Parse(birth.Substring(3, 2)) > 12 || int.Parse(birth.Substring(3, 2)) <= 0)
+                bool ok = false;
+                while (ok == false)
                 {
-                    Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
-                    birth = Console.ReadLine();
-                    birth = ChuanHoaNgaySinh(birth);
-                }
-                //xử lý nhập ngày sinh năm bị sai
-                while (int.Parse(birth.Substring(6, 4)) < 1900 || int.Parse(birth.Substring(6, 4)) > 2100)
-                {
-                    Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
-                    birth = Console.ReadLine();
-                    birth = ChuanHoaNgaySinh(birth);
+                    while (int.Parse(birth.Substring(0, 2)) > 31 || int.Parse(birth.Substring(0, 2)) <= 0 || int.Parse(birth.Substring(3, 2)) > 12 || int.Parse(birth.Substring(3, 2)) <= 0)
+                    {
+                        Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
+                        birth = Console.ReadLine();
+                        birth = ChuanHoaNgaySinh(birth);
+                        ok = false;
+                    }
+                    ok = true;
+                    //xử lý nhập ngày sinh năm bị sai
+                    DateTime dateTime = DateTime.Now;
+                    int currentbirth = dateTime.Year;
+                    while (int.Parse(birth.Substring(6, 4)) < currentbirth - 60 || int.Parse(birth.Substring(6, 4)) > currentbirth)
+                    {
+                        Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
+                        birth = Console.ReadLine();
+                        birth = ChuanHoaNgaySinh(birth);
+                        ok = false;
+                    }
                 }
                 nv.NgaySinh = birth;
                 Console.Write("Nhập lương cơ bản mỗi ngày công: ");
@@ -201,7 +210,7 @@ namespace Duancuoiki
                 int soluachoncv;
                 while (!int.TryParse(nhapluachon, out soluachoncv) || (soluachoncv < 1 || soluachoncv > 4))
                 {
-                    Console.WriteLine("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                    Console.Write("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
                     nhapluachon = Console.ReadLine() ?? "";
                 }
                 switch (soluachoncv)
