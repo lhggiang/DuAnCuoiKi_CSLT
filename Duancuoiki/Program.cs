@@ -228,6 +228,7 @@ class Program
                 case 0:
                     Console.WriteLine("\nBạn đã chọn thoát chương trình!");
                     return;
+                //chạy vào khi nhập số khác lựa chọn 1-11
                 default:
                     Console.WriteLine("\nKhông có chức năng bạn tìm kiếm!");
                     Console.WriteLine("Hãy chọn chức năng khác trong chương trình.");
