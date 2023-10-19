@@ -10,7 +10,9 @@ namespace Duancuoiki
 {
     class QuanLyNhanVien
     {
+        //dùng để lưu NhanVien lúc khởi tạo nhân viên mới
         private List<NhanVien> ListNhanVien = new List<NhanVien>();
+
         //Hàm tạo ID tăng dần 
         private int MaNhanVien()
         {
@@ -33,7 +35,8 @@ namespace Duancuoiki
             }
             return max;
         }
-        //Hàm hiển thị số lượng nhân viên hiện tại
+
+        //Hàm in ra tổng số lượng nhân viên
         public int SoLuongNhanVien()
         {
             int Count = 0;
@@ -46,6 +49,7 @@ namespace Duancuoiki
             }
             return Count;
         }
+
         //Hàm chuẩn hóa tên nhân viên
         public string ChuanHoaTen(string FullName)
         {
@@ -76,6 +80,7 @@ namespace Duancuoiki
             //loại bỏ dấu " " cuối tên
             return Result.TrimEnd();
         }
+
         //Hàm chuẩn hóa ngày sinh 
         public string ChuanHoaNgaySinh(string NgaySinh)
         {
@@ -105,6 +110,7 @@ namespace Duancuoiki
             //dùng ToString() để chuyển lớp StringBuilder thành kiểu dữ liệu string
             return birth.ToString();
         }
+
         //Hàm khởi tạo nhân viên mới 
         public void NhapNhanVien()
         {
@@ -117,7 +123,7 @@ namespace Duancuoiki
                 string name = Console.ReadLine();
                 //dùng hàm chuẩn hóa tên quy tên thành một dạng
                 name = ChuanHoaTen(name);
-                //xử lý tên nhập sai chỉ có một chữ
+                //xử lý tên nhập sai khi chỉ nhập có một chữ
                 bool check = false;
                 while (check == false)
                 {
@@ -135,7 +141,7 @@ namespace Duancuoiki
                 string birth = Console.ReadLine();
                 //dùng hàm chuẩn hóa ngày sinh
                 birth = ChuanHoaNgaySinh(birth);
-                //xử lý nhập ngày sinh ngày, tháng bị sai
+                //xử lý nhập ngày sinh ngày khi ngày bé hơn 1 và lớn hơn 31, tháng bị sai khi tháng bé hơn 1 và lớ hơn 12
                 while (int.Parse(birth.Substring(0, 2)) > 31 || int.Parse(birth.Substring(0, 2)) <= 0 || int.Parse(birth.Substring(3, 2)) > 12 || int.Parse(birth.Substring(3, 2)) <= 0)
                 {
                     Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
@@ -163,32 +169,41 @@ namespace Duancuoiki
                 do
                 {
                     Console.Write("Nhập số ngày công: ");
+                    //nếu nhập vào giá trị là null thì gán chuỗi rỗng
                     soNgayCong = Console.ReadLine() ?? "";
                     if (!int.TryParse(soNgayCong, out SoNgayCong) || SoNgayCong < 0 || SoNgayCong > 31)
                     {
-                        Console.WriteLine("Yêu cầu nhập lại: Số ngày công phải nằm trong khoảng từ 0 đến 31.");
+                        Console.WriteLine("Vui lòng nhập lại số ngày công: ");
                     }
-                } while (SoNgayCong < 0 || SoNgayCong > 31);
+                } while (SoNgayCong < 0 || SoNgayCong > 31 || !int.TryParse(soNgayCong, out SoNgayCong));
                 nv.SoNgayCong = SoNgayCong;
-                //Tiền thưởng số ngày công đạt điều kiện thưởng
-                if (nv.SoNgayCong >= 25) nv.TienThuong = nv.LuongCoBan * 20 / 100;
-                else if (nv.SoNgayCong >= 22) nv.TienThuong = nv.LuongCoBan * 10 / 100;
-                else nv.TienThuong = 0;
-                //Lựa chọn chức vụ tương ứng cho người được thêm vào danh sách
+                //tiền thưởng số ngày công đạt điều kiện thưởng
+                if (nv.SoNgayCong >= 25)
+                {
+                    nv.TienThuong = nv.LuongCoBan * 20 / 100;
+                }
+                else if (nv.SoNgayCong >= 22)
+                {
+                    nv.TienThuong = nv.LuongCoBan * 10 / 100;
+                }
+                else
+                {
+                    nv.TienThuong = 0;
+                }
+                //lựa chọn chức vụ tương ứng cho người được thêm vào danh sách
                 Console.Write("Chọn chức vụ của người được thêm vào danh sách\n" +
-                    "1.Giám đốc\n" +
-                    "2.Phó giám đốc\n" +
-                    "3.Trưởng phòng\n" +
-                    "4.Nhân viên\n" +
+                    "   1.Giám đốc\n" +
+                    "   2.Phó giám đốc\n" +
+                    "   3.Trưởng phòng\n" +
+                    "   4.Nhân viên\n" +
                     "Mời nhập lựa chọn: ");
                 string nhapluachon = Console.ReadLine() ?? "";
                 int soluachoncv;
                 while (!int.TryParse(nhapluachon, out soluachoncv) || (soluachoncv < 1 || soluachoncv > 4))
                 {
-                    Console.WriteLine("Yêu cầu nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                    Console.WriteLine("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
                     nhapluachon = Console.ReadLine() ?? "";
                 }
-
                 switch (soluachoncv)
                 {
                     case 1:
@@ -216,103 +231,153 @@ namespace Duancuoiki
                 Console.WriteLine(e.StackTrace);
             }
         }
+
         // Hàm cập nhật nhân viên
         public void SuaThongTinNhanVien(int ID)
         {
-            // Tìm kiếm nhân viên trong danh sách ListNhanVien
-            NhanVien nv = TimKiemTheoID(ID);
-            if (nv != null)
+            try
             {
-                // Yêu cầu nhập họ tên nhân viên mới
-                Console.Write("Nhập họ tên nhân viên mới: ");
-                // Đọc và loại bỏ khoảng trắng ở đầu và cuối chuỗi nhập liệu
-                string name = Console.ReadLine().Trim();
-                // Kiểm tra xem chuỗi nhập liệu có tồn tại và không rỗng
-                if (!string.IsNullOrEmpty(name))
+                // Tìm kiếm nhân viên trong danh sách ListNhanVien
+                NhanVien nv = TimKiemTheoID(ID);
+                if (nv != null)
                 {
-                    // Nếu họ tên hợp lệ, cập nhật vào thuộc tính HoTen của nhân viên
-                    nv.HoTen = ChuanHoaTen(name);
-                }
-                // Yêu cầu nhập ngày sinh mới
-                Console.Write("Nhập ngày sinh mới thep dạng dd/mm/yyyy: ");
-                // Đọc ngày sinh từ người dùng
-                string NgaySinh = Console.ReadLine();
-                // Kiểm tra xem chuỗi nhập liệu có tồn tại và không rỗng
-                if (!string.IsNullOrEmpty(NgaySinh))
-                {
-                    DateTime ngaySinh;
-                    // Sử dụng TryParseExact để kiểm tra và chuyển đổi định dạng ngày tháng
-                    if (DateTime.TryParseExact(NgaySinh, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out ngaySinh))
+                    // Yêu cầu nhập họ tên nhân viên mới
+                    Console.Write("Nhập họ tên nhân viên mới: ");
+                    // Đọc và loại bỏ khoảng trắng ở đầu và cuối chuỗi nhập liệu
+                    string name = Console.ReadLine().Trim();
+                    // Kiểm tra xem chuỗi nhập liệu có tồn tại và không rỗng
+                    if (!string.IsNullOrEmpty(name))
                     {
-                        // Nếu ngày tháng hợp lệ, cập nhật vào thuộc tính NgaySinh của nhân viên
-                        nv.NgaySinh = NgaySinh;
+                        // Nếu họ tên hợp lệ, cập nhật vào thuộc tính HoTen của nhân viên
+                        nv.HoTen = ChuanHoaTen(name);
+                    }
+                    // Yêu cầu nhập ngày sinh mới
+                    Console.Write("Nhập ngày sinh mới thep dạng dd/mm/yyyy: ");
+                    // Đọc ngày sinh từ người dùng
+                    string NgaySinh = Console.ReadLine();
+                    // Kiểm tra xem chuỗi nhập liệu có tồn tại và không rỗng
+                    if (!string.IsNullOrEmpty(NgaySinh))
+                    {
+                        DateTime ngaySinh;
+                        // Sử dụng TryParseExact để kiểm tra và chuyển đổi định dạng ngày tháng
+                        if (DateTime.TryParseExact(NgaySinh, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out ngaySinh))
+                        {
+                            // Nếu ngày tháng hợp lệ, cập nhật vào thuộc tính NgaySinh của nhân viên
+                            nv.NgaySinh = NgaySinh;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ngày sinh không hợp lệ. Đã bỏ qua cập nhật ngày sinh.");
+                        }
+                    }
+                    // Yêu cầu nhập lương cơ bản mỗi ngày công mới
+                    Console.Write("Nhập lương cơ bản mỗi ngày công mới: ");
+                    // Đọc và chuyển đổi lương cơ bản từ chuỗi nhập liệu sang kiểu int
+                    if (int.TryParse(Console.ReadLine(), out int LuongCoBan))
+                    {
+                        // Nếu lương cơ bản hợp lệ, cập nhật vào thuộc tính LuongCoBan của nhân viên
+                        nv.LuongCoBan = LuongCoBan;
                     }
                     else
                     {
-                        Console.WriteLine("Ngày sinh không hợp lệ. Đã bỏ qua cập nhật ngày sinh.");
+                        Console.WriteLine("Lương cơ bản không hợp lệ. Đã bỏ qua cập nhật lương cơ bản.");
                     }
-                }
-                // Yêu cầu nhập lương cơ bản mỗi ngày công mới
-                Console.Write("Nhập lương cơ bản mỗi ngày công mới: ");
-                // Đọc và chuyển đổi lương cơ bản từ chuỗi nhập liệu sang kiểu int
-                if (int.TryParse(Console.ReadLine(), out int LuongCoBan))
-                {
-                    // Nếu lương cơ bản hợp lệ, cập nhật vào thuộc tính LuongCoBan của nhân viên
-                    nv.LuongCoBan = LuongCoBan;
-                }
-                else
-                {
-                    Console.WriteLine("Lương cơ bản không hợp lệ. Đã bỏ qua cập nhật lương cơ bản.");
-                }
-                // Yêu cầu nhập số ngày công mới
-                Console.Write("Nhập số ngày công mới: ");
-                // Đọc và chuyển đổi số ngày công từ chuỗi nhập liệu sang kiểu int
-                if (int.TryParse(Console.ReadLine(), out int SoNgayCong))
-                {
-                    // Nếu số ngày công hợp lệ, cập nhật vào thuộc tính SoNgayCong của nhân viên
-                    nv.SoNgayCong = SoNgayCong;
-                }
-                else
-                {
-                    Console.WriteLine("Số ngày công không hợp lệ. Đã bỏ qua cập nhật số ngày công.");
-                }
-                // Yêu cầu nhập chức vụ mới
-                Console.Write("Nhập chức vụ mới: ");
-                // Đọc và loại bỏ khoảng trắng ở đầu và cuối chuỗi nhập liệu
-                string ChucVu = Console.ReadLine().Trim();
-                // Kiểm tra xem chuỗi nhập liệu có tồn tại và không rỗng
-                if (!string.IsNullOrEmpty(ChucVu))
-                {
-                    // Nếu chức vụ hợp lệ, cập nhật vào thuộc tính ChucVu của nhân viên
-                    nv.ChucVu = ChucVu;
-                }
-                List<NhanVien> listNV = DocFile.FileDoc();
-                //lưu từng phần tử vào file
-                foreach (NhanVien nhanvien in listNV)
-                {
-                    if (nhanvien.ID == nv.ID)
+                    // Yêu cầu nhập số ngày công mới
+                    Console.Write("Nhập số ngày công mới: ");
+                    // Đọc và chuyển đổi số ngày công từ chuỗi nhập liệu sang kiểu int
+                    if (int.TryParse(Console.ReadLine(), out int SoNgayCong))
                     {
-                        nhanvien.ID = nv.ID;
-                        nhanvien.HoTen = nv.HoTen;
-                        nhanvien.NgaySinh = nv.NgaySinh;
-                        nhanvien.LuongCoBan = nv.LuongCoBan;
-                        nhanvien.SoNgayCong = nv.SoNgayCong;
-                        nhanvien.ChucVu = nv.ChucVu;
+                        // Nếu số ngày công hợp lệ, cập nhật vào thuộc tính SoNgayCong của nhân viên
+                        nv.SoNgayCong = SoNgayCong;
                     }
+                    else
+                    {
+                        Console.WriteLine("Số ngày công không hợp lệ. Đã bỏ qua cập nhật số ngày công.");
+                    }
+                    //tiền thưởng số ngày công đạt điều kiện thưởng
+                    if (nv.SoNgayCong >= 25)
+                    {
+                        nv.TienThuong = nv.LuongCoBan * 20 / 100;
+                    }
+                    else if (nv.SoNgayCong >= 22)
+                    {
+                        nv.TienThuong = nv.LuongCoBan * 10 / 100;
+                    }
+                    else
+                    {
+                        nv.TienThuong = 0;
+                    }
+                    // Yêu cầu nhập chức vụ mới
+                    Console.Write("Câp nhật chức vụ của Nhân Viên này: \n" +
+                        "   1.Giám đốc\n" +
+                        "   2.Phó giám đốc\n" +
+                        "   3.Trưởng phòng\n" +
+                        "   4.Nhân viên\n" +
+                        "Mời nhập lựa chọn: ");
+                    string nhapluachon = Console.ReadLine() ?? "";
+                    int soluachoncv;
+                    while (!int.TryParse(nhapluachon, out soluachoncv) || (soluachoncv < 1 || soluachoncv > 4))
+                    {
+                        Console.WriteLine("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                        nhapluachon = Console.ReadLine() ?? "";
+                    }
+                    switch (soluachoncv)
+                    {
+                        default:
+                            break;
+                        case 1:
+                            nv.ChucVu = "Giám đốc";
+                            nv.PhuCap = 250000;
+                            break;
+                        case 2:
+                            nv.ChucVu = "Phó giám đốc";
+                            nv.PhuCap = 200000;
+                            break;
+                        case 3:
+                            nv.ChucVu = "Trưởng phòng";
+                            nv.PhuCap = 180000;
+                            break;
+                        case 4:
+                            nv.ChucVu = "Nhân viên";
+                            nv.PhuCap = 150000;
+                            break;
+                    }
+                    List<NhanVien> listNV = DocFile.FileDoc();
+                    //lưu từng phần tử vào file
+                    foreach (NhanVien nhanvien in listNV)
+                    {
+                        if (nhanvien.ID == nv.ID)
+                        {
+                            nhanvien.ID = nv.ID;
+                            nhanvien.HoTen = nv.HoTen;
+                            nhanvien.NgaySinh = nv.NgaySinh;
+                            nhanvien.LuongCoBan = nv.LuongCoBan;
+                            nhanvien.SoNgayCong = nv.SoNgayCong;
+                            nhanvien.TienThuong = nv.TienThuong;
+                            nhanvien.PhuCap = nv.PhuCap;
+                            nhanvien.ChucVu = nv.ChucVu;
+                        }
+                    }
+                    //xóa tất cả dữ liệu trong file
+                    File.WriteAllText("data.txt", string.Empty);
+                    //lưu từng phần tử vào file
+                    foreach (NhanVien nhanvien in listNV)
+                    {
+                        DocFile.FileLuu(nhanvien);
+                    }
+                    Console.WriteLine("\nNhân viên có ID = {0} cập nhật dữ liệu thành công", ID);
                 }
-                File.WriteAllText("data.txt", string.Empty);
-                //lưu từng phần tử vào file
-                foreach (NhanVien nhanvien in listNV)
+                else
                 {
-                    DocFile.FileLuu(nhanvien);
+                    Console.WriteLine("\nNhân viên có ID = {0} không tồn tại", ID);
                 }
-                Console.WriteLine("\nNhân viên có ID = {0} cập nhật dữ liệu thành công", ID);
             }
-            else
+            catch(Exception e)
             {
-                Console.WriteLine("\nNhân viên có ID = {0} không tồn tại", ID);
+                Console.WriteLine(e.StackTrace);
             }
         }
+
         //Hàm xóa nhân viên 
         public void XoaNhanVien(int ID)
         {
@@ -351,11 +416,12 @@ namespace Duancuoiki
                 {
                     // Nếu tồn tại, xóa nhân viên khỏi danh sách nhân viên
                     listNV.Remove(nhanVien);
+                    //xóa tất cả dữ liệu trong file
                     File.WriteAllText("data.txt", string.Empty);
                     //lưu từng phần tử vào file
                     foreach (NhanVien nv in listNV)
                     {
-                        DocFile.FileCapNhat(nv);
+                        DocFile.FileLuu(nv);
                     }
                     Console.WriteLine("\nNhân viên có ID = {0} đã được xóa.", ID);
                 }
@@ -365,6 +431,7 @@ namespace Duancuoiki
                 }
             }
         }
+
         //Hàm tìm kiếm nhân viên theo ID 
         public NhanVien TimKiemTheoID(int ID)
         {
@@ -385,6 +452,7 @@ namespace Duancuoiki
             //Trả về nhân viên đó
             return searchResult;
         }
+
         //Hàm tìm kiếm nhân viên theo tên
         public List<NhanVien> TimNhanVienTheoTenNV(string HoTen)
         {
@@ -407,41 +475,54 @@ namespace Duancuoiki
             //Trả về chuỗi nhân viên cần tìm
             return searchResult;
         }
+
         //Hàm tìm nhân viên có ngày sinh bé nhất 
         public NhanVien TimNhanVienLonTuoiNhat()
         {
-            List<NhanVien> listNV = DocFile.FileDoc();
-            // Lấy ngày hiện tại
-            DateTime currentDate = DateTime.Now;
-            // Khởi tạo biến để lưu trữ nhân viên có tuổi lớn nhất
-            NhanVien oldestPerson = null;
-            // Khởi tạo biến để lưu trữ độ chênh lệch thời gian lớn nhất
-            TimeSpan maxAge = TimeSpan.Zero;
-            // Duyệt qua danh sách nhân viên
-            foreach (NhanVien nv in ListNhanVien)
+            try
             {
-                // Chuyển ngày sinh của nhân viên thành kiểu DateTime
-                DateTime NgaySinh = Convert.ToDateTime(nv.NgaySinh);
-                // Tính độ chênh lệch thời gian giữa ngày hiện tại và ngày sinh
-                TimeSpan age = currentDate - NgaySinh;
-                // So sánh với độ chênh lệch lớn nhất đã biết
-                if (age > maxAge)
+                List<NhanVien> listNV = DocFile.FileDoc();
+                // Lấy ngày hiện tại
+                DateTime currentDate = DateTime.Now;
+                // Khởi tạo biến để lưu trữ nhân viên có tuổi lớn nhất
+                NhanVien oldestPerson = null;
+                // Khởi tạo biến để lưu trữ độ chênh lệch thời gian lớn nhất
+                TimeSpan maxAge = TimeSpan.Zero;
+                // Duyệt qua danh sách nhân viên
+                foreach (NhanVien nv in listNV)
                 {
-                    //Nếu tìm thấy người có độ chênh lệch lớn hơn, cập nhật thông tin
-                    maxAge = age;
-                    oldestPerson = nv;
+                    string BirthFormat = nv.NgaySinh.Substring(3, 2) + "/" + nv.NgaySinh.Substring(0, 2) + "/" + nv.NgaySinh.Substring(6, 4);
+                    // Chuyển ngày sinh của nhân viên thành kiểu DateTime
+                    DateTime NgaySinh = Convert.ToDateTime(BirthFormat);
+                    // Tính độ chênh lệch thời gian giữa ngày hiện tại và ngày sinh
+                    TimeSpan age = currentDate.Subtract(NgaySinh);
+                    // So sánh với độ chênh lệch lớn nhất đã biết
+                    if (age > maxAge)
+                    {
+                        //Nếu tìm thấy người có độ chênh lệch lớn hơn, cập nhật thông tin
+                        maxAge = age;
+                        oldestPerson = nv;
+                    }
                 }
+                // Trả về nhân viên có tuổi lớn nhất
+                return oldestPerson;
             }
-            // Trả về nhân viên có tuổi lớn nhất
-            return oldestPerson;
+            catch(Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return null;
+            }
         }
+
         //Hàm sắp xếp theo ID giảm dần 
         public void SapXepTheoID()
         {
             List<NhanVien> listNV = DocFile.FileDoc();
+            //Nếu chuỗi đầu tiên < chuỗi thứ hai, CompareTo sẽ trả về số âm
             listNV.Sort(delegate (NhanVien nv1, NhanVien nv2) {
                 return nv2.ID.CompareTo(nv1.ID);
             });
+            //in nhân viên ra màn hình
             HienThiNhanVien(listNV);
             //xóa dữ liệu ban đầu trong file sorted_data
             File.WriteAllText("sorted_data.txt", string.Empty);
@@ -451,13 +532,25 @@ namespace Duancuoiki
                 DocFile.FileSapXep(nv);
             }
         }
+
         //Hàm sắp xếp theo tên tăng dần
         public void SapXepTheoTen()
         {
             List<NhanVien> listNV = DocFile.FileDoc();
+            //Nếu chuỗi đầu tiên > chuỗi thứ hai, CompareTo sẽ trả về số dương
             listNV.Sort(delegate (NhanVien nv1, NhanVien nv2) {
-                return nv1.HoTen.CompareTo(nv2.HoTen);
+                //nếu trùng tên thì sắp theo ID giảm dần
+                //tách chuỗi họ tên để tìm ra tên
+                string[] name1 = nv1.HoTen.Split(" ");
+                string[] name2 = nv2.HoTen.Split(" ");
+                //dùng length để truy xuất ra phần tử tên có chỉ số cuối c
+                if (name1[name1.Length-1].CompareTo(name2[name2.Length - 1]) == 0)
+                {
+                    return nv2.ID.CompareTo(nv1.ID);
+                }
+                return name1[name1.Length - 1].CompareTo(name2[name2.Length - 1]);
             });
+            //in nhân viên ra màn hình
             HienThiNhanVien(listNV);
             //xóa dữ liệu ban đầu trong file sorted_data
             File.WriteAllText("sorted_data.txt", string.Empty);
@@ -467,22 +560,26 @@ namespace Duancuoiki
                 DocFile.FileSapXep(nv);
             }
         }
+
         //Hàm tính lương nhân viên
         public double TinhLuong(int ID)
         {
             List<NhanVien> listNV = DocFile.FileDoc();
             NhanVien nv = null;
-            long luong = 0;
+            //duyệt qua các nhân viên
             foreach (NhanVien nvID in listNV)
             {
+                //nếu nhân viên có ID trùng với ID nhập vào thì cập nhật Nhân Viên đó vào biến nv
                 if (nvID.ID == ID)
                 {
                     nv = nvID;
                     break;
                 }
             }
+            //nếu đã cập nhật Nhân Viên vào biến nv thì bắt đầu tính lương
             if (nv != null)
             {
+                long luong;
                 if (nv.SoNgayCong >= 25)
                     luong = nv.LuongCoBan * nv.SoNgayCong + nv.TienThuong + nv.PhuCap;
                 else if (nv.SoNgayCong >= 22)
@@ -500,43 +597,53 @@ namespace Duancuoiki
         //Hàm hiển thị danh sách nhân viên 
         public void HienThiNhanVien(List<NhanVien> listNV)
         {
-            //Hiển thị tiêu đề cột
-            Console.WriteLine("{0, -5} {1, -20} {2, -5} {3, 5} {4, 5} {5, 5}",
-                  "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
-            // hiển thị danh sách nhân viên nhân viên
-            if (listNV != null && listNV.Count > 0)
+            try
             {
-                foreach (NhanVien nv in listNV)
+                //Hiển thị tiêu đề cột
+                //{0,-5} cột đầu tiên là cột 0 có độ rộng là 5 và căn lề trái.
+                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}",
+                      "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
+                // hiển thị danh sách nhân viên nhân viên
+                if (listNV != null && listNV.Count > 0)
                 {
-                    Console.WriteLine("{0, -5} {1, -20} {2, -5} {3, 5} {4, 5} {5, 5}",
-                                      nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
+                    foreach (NhanVien nv in listNV)
+                    {
+                        Console.WriteLine("{0, -5} {1, -25} {2, -18} {3, -17} {4, -9} {5, -15}",
+                                          nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
+                    }
                 }
+                Console.WriteLine();
             }
-            Console.WriteLine();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
         }
 
         //Hàm hiển thị toàn bộ danh sách nhân viên 
         public void HienThiToanBoNhanVien()
         {
-            //Hiển thị tiêu đề cột
-            List<NhanVien> listNV = DocFile.FileDoc();
-            Console.WriteLine("{0, -5} {1, -20} {2, -5} {3, 5} {4, 5} {5, 5}",
-                  "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
-            // hiển thị danh sách nhân viên nhân viên
-            if (listNV != null && listNV.Count > 0)
+            try
             {
-                foreach (NhanVien nv in listNV)
+                //Hiển thị tiêu đề cột
+                List<NhanVien> listNV = DocFile.FileDoc();
+                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}",
+                      "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
+                // hiển thị danh sách nhân viên nhân viên
+                if (listNV != null && listNV.Count > 0)
                 {
-                    Console.WriteLine("{0, -5} {1, -20} {2, -5} {3, 5} {4, 5} {5, 5}",
-                                      nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
+                    foreach (NhanVien nv in listNV)
+                    {
+                        Console.WriteLine("{0, -5} {1, -25} {2, -18} {3, -17} {4, -9} {5, -15}",
+                                          nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
+                    }
                 }
+                Console.WriteLine();
+            } 
+            catch(Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
             }
-            Console.WriteLine();
-        }
-        //Hàm trả về danh sách nhân viên - DONE
-        public List<NhanVien> getListNhanVien()
-        {
-            return ListNhanVien;
         }
     }
 }

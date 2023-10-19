@@ -63,6 +63,7 @@ class Program
                     quanLyNhanVien.NhapNhanVien();
                     Console.WriteLine("\nThêm nhân viên thành công!");
                     break;
+
                 case 2: 
                     //check xem danh sách có nhân viên hay không
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
@@ -82,6 +83,7 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 3: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -99,6 +101,7 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 4: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -150,6 +153,7 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 6: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -162,7 +166,8 @@ class Program
                     {
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
-                    break;         
+                    break;
+                    
                 case 7:
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -186,17 +191,19 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 9: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
-                        Console.Write("\n9. In ra tổng số lượng nhân viên.");
-                        Console.WriteLine(quanLyNhanVien.SoLuongNhanVien());
+                        Console.Write("\n9. In ra tổng số lượng nhân viên: ");
+                        Console.WriteLine($"{quanLyNhanVien.SoLuongNhanVien()} nhân viên ");
                     }
                     else
                     {
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 10: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -208,6 +215,7 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 11: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -225,6 +233,7 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+
                 case 0:
                     Console.WriteLine("\nBạn đã chọn thoát chương trình!");
                     return;
