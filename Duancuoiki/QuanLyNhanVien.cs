@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace Duancuoiki
 {
     class QuanLyNhanVien
-    {   
+    {
         private List<NhanVien> ListNhanVien = new List<NhanVien>();
         //Hàm tạo ID tăng dần 
-        private int MaNhanVien() 
+        private int MaNhanVien()
         {
             int max = 1;
             //lấy danh sách nhân viên trong file data.txt lưu vào biến listNV
-            List<NhanVien>  listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             if (listNV != null && listNV.Count > 0)
             {
                 //lấy ra ID của nhân viên vị trí 0 lưu vào biến max
@@ -38,7 +38,7 @@ namespace Duancuoiki
         {
             int Count = 0;
             //lấy danh sách nhân viên trong file data.txt lưu vào biến listNV
-            List<NhanVien> listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             //nếu danh sách khác null thì dùng phương thức count để đếm nhân viên trong listNV
             if (listNV != null)
             {
@@ -90,7 +90,7 @@ namespace Duancuoiki
             {
                 NgaySinh = NgaySinh.Replace("  ", " ");
             }
-           //kiểm tra xem nếu birth vị trí 1 là dấu / chứng tỏ nó đang thiếu số 0  
+            //kiểm tra xem nếu birth vị trí 1 là dấu / chứng tỏ nó đang thiếu số 0  
             if (birth[1] == '/')
             {
                 //dùng insert thêm vào birth vị trí 0 số 0 để chuẩn dạng dd/mm/yyyy
@@ -171,7 +171,7 @@ namespace Duancuoiki
                 //lưu file
                 DocFile.FileLuu(nv);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
             }
@@ -306,7 +306,7 @@ namespace Duancuoiki
         {
             NhanVien searchResult = null;
             //Duyệt Nhân viên trong Danh sách Nhân viên
-            List<NhanVien> listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             if (listNV != null && listNV.Count > 0)
             {
                 foreach (NhanVien nv in listNV)
@@ -326,7 +326,7 @@ namespace Duancuoiki
         {
             //Tạo một Danh sách người dùng trả về hợp lệ
             List<NhanVien> searchResult = new List<NhanVien>();
-            List<NhanVien> listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             if (listNV != null && listNV.Count > 0)
             {
                 foreach (NhanVien nv in listNV)
@@ -346,7 +346,7 @@ namespace Duancuoiki
         //Hàm tìm nhân viên có ngày sinh bé nhất 
         public NhanVien TimNhanVienLonTuoiNhat()
         {
-            List<NhanVien> listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             // Lấy ngày hiện tại
             DateTime currentDate = DateTime.Now;
             // Khởi tạo biến để lưu trữ nhân viên có tuổi lớn nhất
@@ -374,17 +374,34 @@ namespace Duancuoiki
         //Hàm sắp xếp theo ID giảm dần 
         public void SapXepTheoID()
         {
-            List<NhanVien> listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             listNV.Sort(delegate (NhanVien nv1, NhanVien nv2) {
                 return nv2.ID.CompareTo(nv1.ID);
             });
+            HienThiNhanVien(listNV);
+            //xóa dữ liệu ban đầu trong file sorted_data
+            File.WriteAllText("sorted_data.txt", string.Empty);
+            //lưu từng phần tử vào file
+            foreach (NhanVien nv in listNV)
+            {
+                DocFile.FileSapXep(nv);
+            }
         }
         //Hàm sắp xếp theo tên tăng dần
         public void SapXepTheoTen()
         {
-            ListNhanVien.Sort(delegate (NhanVien nv1, NhanVien nv2) {
+            List<NhanVien> listNV = DocFile.FileDoc();
+            listNV.Sort(delegate (NhanVien nv1, NhanVien nv2) {
                 return nv1.HoTen.CompareTo(nv2.HoTen);
             });
+            HienThiNhanVien(listNV);
+            //xóa dữ liệu ban đầu trong file sorted_data
+            File.WriteAllText("sorted_data.txt", string.Empty);
+            //lưu từng phần tử vào file
+            foreach (NhanVien nv in listNV)
+            {
+                DocFile.FileSapXep(nv);
+            }
         }
         // Hàm tính lương nhân viên
 
@@ -410,7 +427,7 @@ namespace Duancuoiki
         public void HienThiToanBoNhanVien()
         {
             //Hiển thị tiêu đề cột
-            List<NhanVien> listNV = DocFile.FileDoc("data.txt");
+            List<NhanVien> listNV = DocFile.FileDoc();
             Console.WriteLine("{0, -5} {1, -20} {2, -5} {3, 5} {4, 5} {5, 5}",
                   "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
             // hiển thị danh sách nhân viên nhân viên

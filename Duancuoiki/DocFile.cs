@@ -12,12 +12,12 @@ namespace Duancuoiki
         public static bool FileLuu(NhanVien nv)
         {
             try
-            {              
-                StreamWriter streamWriter = new StreamWriter("data.txt",true,Encoding.UTF8);
+            {
+                StreamWriter streamWriter = new StreamWriter("data.txt", true, Encoding.UTF8);
                 using (streamWriter)
                 {
-                        string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.ChucVu;
-                        streamWriter.WriteLine(line);
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.ChucVu;
+                    streamWriter.WriteLine(line);
                 }
                 return true;
             }
@@ -27,7 +27,26 @@ namespace Duancuoiki
                 return false;
             }
         }
-        public static List<NhanVien> FileDoc(string path)
+        public static bool FileSapXep(NhanVien nv)
+        {
+            try
+            {
+                StreamWriter streamWriter = new StreamWriter("sorted_data.txt", true, Encoding.UTF8);
+                using (streamWriter)
+                {
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.ChucVu;
+                    streamWriter.WriteLine(line);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.StackTrace);
+                return false;
+            }
+        }
+
+        public static List<NhanVien> FileDoc()
         {
             List<NhanVien> dsnv = new List<NhanVien>();
             try

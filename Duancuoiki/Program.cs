@@ -136,7 +136,6 @@ class Program
                     {
                         Console.WriteLine("\n7. Sắp xếp nhân viên theo ID giảm dần.");
                         quanLyNhanVien.SapXepTheoID();
-                        quanLyNhanVien.HienThiNhanVien(quanLyNhanVien.getListNhanVien());
                     }
                     else
                     {
@@ -149,7 +148,6 @@ class Program
                     {
                         Console.WriteLine("\n8. Sắp xếp nhân viên theo tên tăng dần.");
                         quanLyNhanVien.SapXepTheoTen();
-                        quanLyNhanVien.HienThiNhanVien(quanLyNhanVien.getListNhanVien());
                     }
                     else
                     {
