@@ -9,43 +9,44 @@ namespace Duancuoiki
 {
     class DocFile
     {
-        public static bool FileLuu(NhanVien nv)
+        //hàm ghi file
+        public static void FileLuu(NhanVien nv)
         {
             try
             {
+                //đối tượng ghi file, true là có ghi đè, Encoding.UTF8 là tiếng Việt
                 StreamWriter streamWriter = new StreamWriter("data.txt", true, Encoding.UTF8);
                 using (streamWriter)
                 {
+                    //chuẩn hóa để lưu vào file, các phần tử phân cách nhau bởi dấu ;
                     string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
+                    //ghi từng dòng vào file
                     streamWriter.WriteLine(line);
                 }
-                return true;
             }
             catch (Exception e)
             {
                 Console.Write(e.StackTrace);
-                return false;
             }
         }
-        public static bool FileCapNhat(NhanVien nv)
+        public static void FileCapNhat(NhanVien nv)
         {
             try
             {
+                //giá trị false: không có ghi đè
                 StreamWriter streamWriter = new StreamWriter("data.txt", false, Encoding.UTF8);
                 using (streamWriter)
                 {
                     string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
                     streamWriter.WriteLine(line);
                 }
-                return true;
             }
             catch (Exception e)
             {
                 Console.Write(e.StackTrace);
-                return false;
             }
         }
-        public static bool FileSapXep(NhanVien nv)
+        public static void FileSapXep(NhanVien nv)
         {
             try
             {
@@ -55,27 +56,30 @@ namespace Duancuoiki
                     string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
                     streamWriter.WriteLine(line);
                 }
-                return true;
             }
             catch (Exception e)
             {
                 Console.Write(e.StackTrace);
-                return false;
             }
         }
-
+        //hàm đọc file
         public static List<NhanVien> FileDoc()
         {
+            //tạo list lưu Nhân Viên trả ra khi đọc
             List<NhanVien> dsnv = new List<NhanVien>();
             try
             {
+                //đối tượng đọc file
                 StreamReader streamReader = new StreamReader("data.txt", Encoding.UTF8);
                 using (streamReader)
                 {
+                    //đầu đọc trỏ đến dòng đầu tiên
                     string line = streamReader.ReadLine();
                     while (line != null)
                     {
+                        //tách chuỗi string ra
                         string[] arr = line.Split(";");
+                        //nếu mảng có đủ 8 phần tử sẽ lưu vào đối tượng Nhân Viên
                         if (arr.Length == 8)
                         {
                             NhanVien nv = new NhanVien();
@@ -87,8 +91,10 @@ namespace Duancuoiki
                             nv.TienThuong = int.Parse(arr[5]);
                             nv.PhuCap = int.Parse(arr[6]);
                             nv.ChucVu = arr[7];
+                            //thêm đối tượng Nhân Viên vào list
                             dsnv.Add(nv);
                         }
+                        //chuyển đầu đọc sang dòng tiếp theo
                         line = streamReader.ReadLine();
                     }
                 }
@@ -97,6 +103,7 @@ namespace Duancuoiki
             {
                 Console.Write(e.StackTrace);
             }
+            //trả về list Nhân Viên
             return dsnv;
         }
     }
