@@ -13,8 +13,8 @@ class Program
         QuanLyNhanVien quanLyNhanVien = new QuanLyNhanVien();
         while (true)
         {
-            Console.WriteLine("\nCHƯƠNG TRÌNH QUẢN LÝ NHÂN VIÊN C#");
-            Console.WriteLine("*************************MENU**************************");
+            Console.WriteLine("\n***********CHƯƠNG TRÌNH QUẢN LÝ NHÂN VIÊN C#***********");
+            Console.WriteLine("*******************************************************");
             Console.WriteLine("**  1. Thêm nhân viên.                               **");
             Console.WriteLine("**  2. Cập nhật thông tin nhân viên theo ID.         **");
             Console.WriteLine("**  3. Xóa nhân viên theo ID.                        **");
@@ -25,8 +25,16 @@ class Program
             Console.WriteLine("**  8. Sắp xếp nhân viên theo tên.                   **");
             Console.WriteLine("**  9. Tổng số lượng nhân viên hiện tại.             **");
             Console.WriteLine("** 10. Hiển thị danh sách nhân viên.                 **");
-            Console.WriteLine("**  0. Thoát chương trình                            **");
-            Console.WriteLine("*******************************************************");
+            Console.WriteLine("** 11. Tính lương tháng nhân viên theo ID            **");
+            Console.WriteLine("**  0. Thoát chương trình.                            **");
+            for (int i = 1; i <= 2; i++)
+            {
+                for (int j = 1; j <= 55; j++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
             Console.Write("Nhập tùy chọn: ");
             int luachon = int.Parse(Console.ReadLine());
             switch (luachon)
@@ -40,35 +48,37 @@ class Program
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
                         int id;
-                        Console.Write("\nNhập ID để chỉnh sửa: ");
+                        Console.WriteLine("\n2. Cập nhật thông tin nhân viên theo ID.");
+                        Console.Write("\nNhập ID để cập nhật thông tin: ");
                         while (int.TryParse(Console.ReadLine(), out id) == false)
                         {
-                            Console.Write("\nVui lòng nhập lại ID để tìm kiếm: ");
+                            Console.Write("\nVui lòng nhập lại ID để cập nhật thông tin: ");
                         }
                         quanLyNhanVien.SuaThongTinNhanVien(id);
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nNhân viên cần cập nhật không tồn tại!");
-                    }
-                    break;
-                case 3: //done
-                    if (quanLyNhanVien.SoLuongNhanVien() > 0)
-                    {
-                        Console.WriteLine("\n3. Xóa nhân viên.");
-                        Console.Write("\nNhập ID nhân viên: ");
-                        int id = int.Parse(Console.ReadLine());
-                        if (quanLyNhanVien.XoaNhanVien(id))
-                        {
-                            Console.WriteLine("\nNhân viên có ID = {0} đã bị xóa.", id);
-                        }
                     }
                     else
                     {
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
-                
+                case 3: 
+                    if (quanLyNhanVien.SoLuongNhanVien() > 0)
+                    {
+                        int id;
+                        Console.WriteLine("\n3. Xóa nhân viên.");
+                        Console.Write("\nNhập ID cần xóa. Nếu nhập -1 mặc định xóa hết nhân viên: ");
+                        while (int.TryParse(Console.ReadLine(), out id) == false)
+                        {
+                            Console.Write("\nVui lòng nhập lại ID để xóa. Nếu nhập -1 mặc định xóa hết nhân viên: ");
+                        }
+                        quanLyNhanVien.XoaNhanVien(id);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
+                    }
+                    break;
+
                 case 4: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
@@ -131,27 +141,27 @@ class Program
                     }
                     break;
                 
-                case 7: //done
+                case 7:
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
-                        Console.WriteLine("\n7. Sắp xếp nhân viên theo ID giảm dần.");
+                        Console.WriteLine("\n7. Sắp xếp nhân viên theo ID.");
                         quanLyNhanVien.SapXepTheoID();
                     }
                     else
                     {
-                        Console.WriteLine("\nKhông có nhân viên để sắp xếp!");
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
-                
-                case 8: //done
+
+                case 8: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
-                        Console.WriteLine("\n8. Sắp xếp nhân viên theo tên tăng dần.");
+                        Console.WriteLine("\n8. Sắp xếp nhân viên theo tên.");
                         quanLyNhanVien.SapXepTheoTen();
                     }
                     else
                     {
-                        Console.WriteLine("\nKhông có nhân viên để sắp xếp!");
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
                 case 9: //done
@@ -165,11 +175,28 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
-                case 10: //done
+                case 10: 
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
                         Console.WriteLine("\n10. Hiển thị danh sách nhân viên.");
                         quanLyNhanVien.HienThiToanBoNhanVien();
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
+                    }
+                    break;
+                case 11: 
+                    if (quanLyNhanVien.SoLuongNhanVien() > 0)
+                    {
+                        int id;
+                        Console.WriteLine("\n11. Tính lương tháng nhân viên theo ID ");
+                        Console.Write("\nNhập ID để tính lương: ");
+                        while (int.TryParse(Console.ReadLine(), out id) == false)
+                        {
+                            Console.Write("\nVui lòng nhập lại ID để tính lương: ");
+                        }
+                        Console.WriteLine(quanLyNhanVien.TinhLuong(id));
                     }
                     else
                     {

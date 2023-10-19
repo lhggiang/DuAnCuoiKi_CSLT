@@ -158,16 +158,56 @@ namespace Duancuoiki
                     Console.Write("Vui lòng nhập lại lương cơ bản mỗi ngày công: ");
                 }
                 nv.LuongCoBan = LuongCoBan;
-                Console.Write("Nhập số ngày công: ");
                 int SoNgayCong;
-                //nếu nhập sai thì cho nhập lại
-                while (int.TryParse(Console.ReadLine(), out SoNgayCong) == false)
+                string soNgayCong;
+                do
                 {
-                    Console.Write("Vui lòng nhập lại số ngày công: ");
-                }
+                    Console.Write("Nhập số ngày công: ");
+                    soNgayCong = Console.ReadLine() ?? "";
+                    if (!int.TryParse(soNgayCong, out SoNgayCong) || SoNgayCong < 0 || SoNgayCong > 31)
+                    {
+                        Console.WriteLine("Yêu cầu nhập lại: Số ngày công phải nằm trong khoảng từ 0 đến 31.");
+                    }
+                } while (SoNgayCong < 0 || SoNgayCong > 31);
                 nv.SoNgayCong = SoNgayCong;
-                Console.Write("Nhập chức vụ của nhân viên: ");
-                nv.ChucVu = Console.ReadLine();
+                //Tiền thưởng số ngày công đạt điều kiện thưởng
+                if (nv.SoNgayCong >= 25) nv.TienThuong = nv.LuongCoBan * 20 / 100;
+                else if (nv.SoNgayCong >= 22) nv.TienThuong = nv.LuongCoBan * 10 / 100;
+                else nv.TienThuong = 0;
+                //Lựa chọn chức vụ tương ứng cho người được thêm vào danh sách
+                Console.Write("Chọn chức vụ của người được thêm vào danh sách\n" +
+                    "1.Giám đốc\n" +
+                    "2.Phó giám đốc\n" +
+                    "3.Trưởng phòng\n" +
+                    "4.Nhân viên\n" +
+                    "Mời nhập lựa chọn: ");
+                string nhapluachon = Console.ReadLine() ?? "";
+                int soluachoncv;
+                while (!int.TryParse(nhapluachon, out soluachoncv) || (soluachoncv < 1 || soluachoncv > 4))
+                {
+                    Console.WriteLine("Yêu cầu nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                    nhapluachon = Console.ReadLine() ?? "";
+                }
+
+                switch (soluachoncv)
+                {
+                    case 1:
+                        nv.ChucVu = "Giám đốc";
+                        nv.PhuCap = 250000;
+                        break;
+                    case 2:
+                        nv.ChucVu = "Phó giám đốc";
+                        nv.PhuCap = 200000;
+                        break;
+                    case 3:
+                        nv.ChucVu = "Trưởng phòng";
+                        nv.PhuCap = 180000;
+                        break;
+                    case 4:
+                        nv.ChucVu = "Nhân viên";
+                        nv.PhuCap = 150000;
+                        break;
+                }
                 //lưu file
                 DocFile.FileLuu(nv);
             }
@@ -246,28 +286,49 @@ namespace Duancuoiki
                     // Nếu chức vụ hợp lệ, cập nhật vào thuộc tính ChucVu của nhân viên
                     nv.ChucVu = ChucVu;
                 }
+                List<NhanVien> listNV = DocFile.FileDoc();
+                //lưu từng phần tử vào file
+                foreach (NhanVien nhanvien in listNV)
+                {
+                    if (nhanvien.ID == nv.ID)
+                    {
+                        nhanvien.ID = nv.ID;
+                        nhanvien.HoTen = nv.HoTen;
+                        nhanvien.NgaySinh = nv.NgaySinh;
+                        nhanvien.LuongCoBan = nv.LuongCoBan;
+                        nhanvien.SoNgayCong = nv.SoNgayCong;
+                        nhanvien.ChucVu = nv.ChucVu;
+                    }
+                }
+                File.WriteAllText("data.txt", string.Empty);
+                //lưu từng phần tử vào file
+                foreach (NhanVien nhanvien in listNV)
+                {
+                    DocFile.FileLuu(nhanvien);
+                }
+                Console.WriteLine("\nNhân viên có ID = {0} cập nhật dữ liệu thành công", ID);
             }
             else
             {
-                Console.WriteLine("Nhân viên có ID = {0} không tồn tại", ID);
+                Console.WriteLine("\nNhân viên có ID = {0} không tồn tại", ID);
             }
         }
         //Hàm xóa nhân viên 
-        public bool XoaNhanVien(int ID)
+        public void XoaNhanVien(int ID)
         {
+            List<NhanVien> listNV = DocFile.FileDoc();
             if (ID == -1)
             {
                 // Xóa toàn bộ nhân viên
-                if (ListNhanVien.Count > 0)
+                if (listNV.Count > 0)
                 {
-                    ListNhanVien.Clear();
-                    Console.WriteLine("Đã xóa toàn bộ nhân viên.");
-                    return true;
+                    listNV.Clear();
+                    File.WriteAllText("data.txt", string.Empty);
+                    Console.WriteLine("\nĐã xóa toàn bộ nhân viên.");
                 }
                 else
                 {
                     Console.WriteLine("Danh sách nhân viên đã trống, không có gì để xóa.");
-                    return false;
                 }
             }
             else
@@ -276,7 +337,7 @@ namespace Duancuoiki
                 NhanVien nhanVien = null;
 
                 // Duyệt qua danh sách nhân viên để tìm nhân viên cần xóa
-                foreach (NhanVien nv in ListNhanVien)
+                foreach (NhanVien nv in listNV)
                 {
                     if (nv.ID == ID)
                     {
@@ -289,18 +350,21 @@ namespace Duancuoiki
                 if (nhanVien != null)
                 {
                     // Nếu tồn tại, xóa nhân viên khỏi danh sách nhân viên
-                    ListNhanVien.Remove(nhanVien);
-                    Console.WriteLine("Nhân viên có ID = {0} đã được xóa.", ID);
-                    return true;
+                    listNV.Remove(nhanVien);
+                    File.WriteAllText("data.txt", string.Empty);
+                    //lưu từng phần tử vào file
+                    foreach (NhanVien nv in listNV)
+                    {
+                        DocFile.FileCapNhat(nv);
+                    }
+                    Console.WriteLine("\nNhân viên có ID = {0} đã được xóa.", ID);
                 }
                 else
                 {
-                    Console.WriteLine("Không tìm thấy nhân viên có ID = {0}. Xóa không thành công.", ID);
-                    return false;
+                    Console.WriteLine("\nKhông tìm thấy nhân viên có ID = {0}. Xóa không thành công.", ID);
                 }
             }
         }
-
         //Hàm tìm kiếm nhân viên theo ID 
         public NhanVien TimKiemTheoID(int ID)
         {
@@ -403,7 +467,35 @@ namespace Duancuoiki
                 DocFile.FileSapXep(nv);
             }
         }
-        // Hàm tính lương nhân viên
+        //Hàm tính lương nhân viên
+        public double TinhLuong(int ID)
+        {
+            List<NhanVien> listNV = DocFile.FileDoc();
+            NhanVien nv = null;
+            long luong = 0;
+            foreach (NhanVien nvID in listNV)
+            {
+                if (nvID.ID == ID)
+                {
+                    nv = nvID;
+                    break;
+                }
+            }
+            if (nv != null)
+            {
+                if (nv.SoNgayCong >= 25)
+                    luong = nv.LuongCoBan * nv.SoNgayCong + nv.TienThuong + nv.PhuCap;
+                else if (nv.SoNgayCong >= 22)
+                    luong = nv.LuongCoBan * nv.SoNgayCong + nv.TienThuong + nv.PhuCap;
+                else luong = nv.LuongCoBan * nv.SoNgayCong + nv.PhuCap;
+                return luong;
+            }
+            else
+            {
+                Console.WriteLine("Khong tim thay nhan vien co ID = {0}", ID);
+                return 0;
+            }
+        }
 
         //Hàm hiển thị danh sách nhân viên 
         public void HienThiNhanVien(List<NhanVien> listNV)

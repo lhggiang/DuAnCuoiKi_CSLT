@@ -8,5 +8,7 @@
         public int LuongCoBan { get; set; }
         public int SoNgayCong { get; set; }
         public string ChucVu { get; set; }
+        public int PhuCap { get; set; }
+        public int TienThuong { get; set; }
     }
 }

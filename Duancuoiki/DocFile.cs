@@ -16,7 +16,25 @@ namespace Duancuoiki
                 StreamWriter streamWriter = new StreamWriter("data.txt", true, Encoding.UTF8);
                 using (streamWriter)
                 {
-                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.ChucVu;
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
+                    streamWriter.WriteLine(line);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.StackTrace);
+                return false;
+            }
+        }
+        public static bool FileCapNhat(NhanVien nv)
+        {
+            try
+            {
+                StreamWriter streamWriter = new StreamWriter("data.txt", false, Encoding.UTF8);
+                using (streamWriter)
+                {
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
                     streamWriter.WriteLine(line);
                 }
                 return true;
@@ -34,7 +52,7 @@ namespace Duancuoiki
                 StreamWriter streamWriter = new StreamWriter("sorted_data.txt", true, Encoding.UTF8);
                 using (streamWriter)
                 {
-                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.ChucVu;
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
                     streamWriter.WriteLine(line);
                 }
                 return true;
@@ -58,7 +76,7 @@ namespace Duancuoiki
                     while (line != null)
                     {
                         string[] arr = line.Split(";");
-                        if (arr.Length == 6)
+                        if (arr.Length == 8)
                         {
                             NhanVien nv = new NhanVien();
                             nv.ID = int.Parse(arr[0]);
@@ -66,7 +84,9 @@ namespace Duancuoiki
                             nv.NgaySinh = arr[2];
                             nv.LuongCoBan = int.Parse(arr[3]);
                             nv.SoNgayCong = int.Parse(arr[4]);
-                            nv.ChucVu = arr[5];
+                            nv.TienThuong = int.Parse(arr[5]);
+                            nv.PhuCap = int.Parse(arr[6]);
+                            nv.ChucVu = arr[7];
                             dsnv.Add(nv);
                         }
                         line = streamReader.ReadLine();
