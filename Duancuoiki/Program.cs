@@ -23,7 +23,13 @@ class Program
         while (true)
         {
             Console.WriteLine("\n***********CHƯƠNG TRÌNH QUẢN LÝ NHÂN VIÊN C#***********");
-            Console.WriteLine("*******************************************************");
+            //dùng mảng một chiều in ra dấu *
+            int[] a = new int[55];
+            for(int i=1; i <= a.Length; i++)
+            {
+                Console.Write("*");
+            }
+            Console.WriteLine();
             Console.WriteLine($"**  {A[0,1]}. Thêm nhân viên.                               **"); //1
             Console.WriteLine($"**  {A[0,2]}. Cập nhật thông tin nhân viên theo ID.         **"); //2
             Console.WriteLine($"**  {A[0,3]}. Xóa nhân viên theo ID.                        **"); //3
@@ -153,13 +159,11 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
-
-                case 6: 
+                case 6:
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {
                         Console.WriteLine("\n6. Tìm kiếm nhân viên có ngày sinh bé nhất.");
-                        List<NhanVien> searchResult = new List<NhanVien>();
-                        searchResult.Add(quanLyNhanVien.TimNhanVienLonTuoiNhat());
+                        List<NhanVien> searchResult = quanLyNhanVien.TimNhanVienLonTuoiNhat();
                         quanLyNhanVien.HienThiNhanVien(searchResult);
                     }
                     else
@@ -167,7 +171,7 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
-                    
+
                 case 7:
                     if (quanLyNhanVien.SoLuongNhanVien() > 0)
                     {

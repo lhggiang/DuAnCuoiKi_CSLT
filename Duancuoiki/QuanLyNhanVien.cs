@@ -10,9 +10,6 @@ namespace Duancuoiki
 {
     class QuanLyNhanVien
     {
-        //dùng để lưu NhanVien lúc khởi tạo nhân viên mới
-        private List<NhanVien> ListNhanVien = new List<NhanVien>();
-
         //Hàm tạo ID tăng dần 
         private int MaNhanVien()
         {
@@ -118,9 +115,17 @@ namespace Duancuoiki
             try
             {
                 NhanVien nv = new NhanVien();
+                //gán ID nhân viên
                 nv.ID = MaNhanVien();
+                //nhập tên nhân viên
                 Console.Write("Nhập họ tên nhân viên: ");
                 string name = Console.ReadLine();
+                //xử lý khi nhập dấu enter
+                while (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.Write("Vui lòng nhập lại họ tên nhân viên: ");
+                    name = Console.ReadLine();
+                }
                 //dùng hàm chuẩn hóa tên quy tên thành một dạng
                 name = ChuanHoaTen(name);
                 //xử lý tên nhập sai khi chỉ nhập có một chữ
@@ -135,34 +140,61 @@ namespace Duancuoiki
                         name = ChuanHoaTen(name);
                     }
                     else check = true;
-                }
+                }   
                 nv.HoTen = name;
+                //nhập ngày sinh
                 Console.Write("Nhập ngày sinh nhân viên dạng dd/mm/yyyy: ");
                 string birth = Console.ReadLine();
+                //xử lý khi nhập dấu enter
+                while (string.IsNullOrWhiteSpace(birth))
+                {
+                    Console.Write("Vui lòng nhập lại ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
+                    birth = Console.ReadLine();
+                }
                 //dùng hàm chuẩn hóa ngày sinh
                 birth = ChuanHoaNgaySinh(birth);
-                //xử lý nhập ngày sinh ngày khi ngày bé hơn 1 và lớn hơn 31, tháng bị sai khi tháng bé hơn 1 và lớ hơn 12
                 bool ok = false;
                 while (ok == false)
                 {
-                    while (int.Parse(birth.Substring(0, 2)) > 31 || int.Parse(birth.Substring(0, 2)) <= 0 || int.Parse(birth.Substring(3, 2)) > 12 || int.Parse(birth.Substring(3, 2)) <= 0)
-                    {
-                        Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
-                        birth = Console.ReadLine();
-                        birth = ChuanHoaNgaySinh(birth);
-                        ok = false;
-                    }
-                    ok = true;
-                    //xử lý nhập ngày sinh năm bị sai
+                    //xử lý nhập ngày sinh ngày khi ngày bé hơn 1 và lớn hơn 31, tháng bị sai khi tháng bé hơn 1 và lớn hơn 12, năm nhập lớn hơn năm hiện tại
                     DateTime dateTime = DateTime.Now;
                     int currentbirth = dateTime.Year;
-                    while (int.Parse(birth.Substring(6, 4)) < currentbirth - 60 || int.Parse(birth.Substring(6, 4)) > currentbirth)
+                    //xử lý để khi chuyển string birth thành DateTime không bị lỗi
+                    string BirthFormat = birth.Substring(3, 2) + "/" + birth.Substring(0, 2) + "/" + birth.Substring(6, 4);
+                    while ((int.Parse(birth.Substring(0, 2)) > 31) || (int.Parse(birth.Substring(0, 2)) <= 0) ||
+                        (int.Parse(birth.Substring(3, 2)) > 12) || (int.Parse(birth.Substring(3, 2)) <= 0)||
+                        (int.Parse(birth.Substring(6, 4)) < currentbirth - 60) || (int.Parse(birth.Substring(6, 4)) > currentbirth))
                     {
-                        Console.Write("Vui lòng nhập ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
+                        Console.Write("Vui lòng nhập lại ngày sinh nhân viên theo dạng dd/mm/yyyy A: ");
                         birth = Console.ReadLine();
                         birth = ChuanHoaNgaySinh(birth);
-                        ok = false;
                     }
+                    // Kiểm tra trường hợp thời gian nhập lớn hơn thời gian hiện tại
+                    while (true)
+                    {
+                        BirthFormat = birth.Substring(3, 2) + "/" + birth.Substring(0, 2) + "/" + birth.Substring(6, 4);
+                        if (!DateTime.TryParse(BirthFormat, out DateTime userTime))
+                        {
+                            Console.Write("Vui lòng nhập lại ngày sinh nhân viên theo dạng dd/mm/yyyy B: ");
+                            birth = Console.ReadLine();
+                            birth = ChuanHoaNgaySinh(birth);
+                        }
+                        break;
+                    }
+                    //vì sau vòng true ở trên giá trị BirthFormatd đã thay đổi nên ta gán lại giá trị mới
+                    BirthFormat = birth.Substring(3, 2) + "/" + birth.Substring(0, 2) + "/" + birth.Substring(6, 4);
+                    //chuyển ngày sinh của nhân viên thành kiểu DateTime
+                    DateTime NgaySinh = Convert.ToDateTime(BirthFormat);
+                    //check lại các điều kiện
+                    while ((int.Parse(birth.Substring(0, 2)) > 31) || (int.Parse(birth.Substring(0, 2)) <= 0) || 
+                        (int.Parse(birth.Substring(3, 2)) > 12) || (int.Parse(birth.Substring(3, 2)) <= 0) || 
+                        (int.Parse(birth.Substring(6, 4)) < currentbirth - 60) || (int.Parse(birth.Substring(6, 4)) > currentbirth) || (NgaySinh > dateTime))
+                    {
+                        Console.Write("Vui lòng nhập lại ngày sinh nhân viên theo dạng dd/mm/yyyy: ");
+                        birth = Console.ReadLine();
+                        birth = ChuanHoaNgaySinh(birth);
+                    }
+                    ok = true;
                 }
                 nv.NgaySinh = birth;
                 Console.Write("Nhập lương cơ bản mỗi ngày công: ");
@@ -173,6 +205,7 @@ namespace Duancuoiki
                     Console.Write("Vui lòng nhập lại lương cơ bản mỗi ngày công: ");
                 }
                 nv.LuongCoBan = LuongCoBan;
+                //nhập số ngày công
                 int SoNgayCong;
                 string soNgayCong;
                 do
@@ -327,7 +360,7 @@ namespace Duancuoiki
                     int soluachoncv;
                     while (!int.TryParse(nhapluachon, out soluachoncv) || (soluachoncv < 1 || soluachoncv > 4))
                     {
-                        Console.WriteLine("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                        Console.Write("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
                         nhapluachon = Console.ReadLine() ?? "";
                     }
                     switch (soluachoncv)
@@ -486,11 +519,12 @@ namespace Duancuoiki
         }
 
         //Hàm tìm nhân viên có ngày sinh bé nhất 
-        public NhanVien TimNhanVienLonTuoiNhat()
+        public List<NhanVien> TimNhanVienLonTuoiNhat()
         {
             try
             {
                 List<NhanVien> listNV = DocFile.FileDoc();
+                List<NhanVien> result = new List<NhanVien>();
                 // Lấy ngày hiện tại
                 DateTime currentDate = DateTime.Now;
                 // Khởi tạo biến để lưu trữ nhân viên có tuổi lớn nhất
@@ -513,16 +547,22 @@ namespace Duancuoiki
                         oldestPerson = nv;
                     }
                 }
+                foreach (NhanVien nv in listNV)
+                {
+                    if (nv.NgaySinh == oldestPerson.NgaySinh)
+                    {
+                        result.Add(nv);
+                    }
+                }
                 // Trả về nhân viên có tuổi lớn nhất
-                return oldestPerson;
+                return result;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
-
         //Hàm sắp xếp theo ID giảm dần 
         public void SapXepTheoID()
         {
@@ -571,7 +611,7 @@ namespace Duancuoiki
         }
 
         //Hàm tính lương nhân viên
-        public double TinhLuong(int ID)
+        public string TinhLuong(int ID)
         {
             List<NhanVien> listNV = DocFile.FileDoc();
             NhanVien nv = null;
@@ -594,12 +634,13 @@ namespace Duancuoiki
                 else if (nv.SoNgayCong >= 22)
                     luong = nv.LuongCoBan * nv.SoNgayCong + nv.TienThuong + nv.PhuCap;
                 else luong = nv.LuongCoBan * nv.SoNgayCong + nv.PhuCap;
-                return luong;
+                Console.Write($"Lương của nhân viên là: {luong}");
+                return "";
             }
             else
             {
-                Console.WriteLine("Khong tim thay nhan vien co ID = {0}", ID);
-                return 0;
+                Console.WriteLine("Không tìm thấy nhân viên có ID = {0}", ID);
+                return "";
             }
         }
 
@@ -610,14 +651,18 @@ namespace Duancuoiki
             {
                 //Hiển thị tiêu đề cột
                 //{0,-5} cột đầu tiên là cột 0 có độ rộng là 5 và căn lề trái.
+                //đổi tiêu đề thành màu đỏ
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}",
                       "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
                 // hiển thị danh sách nhân viên nhân viên
+                //đổi chữ thành màu trắng
+                Console.ForegroundColor = ConsoleColor.White;
                 if (listNV != null && listNV.Count > 0)
                 {
                     foreach (NhanVien nv in listNV)
                     {
-                        Console.WriteLine("{0, -5} {1, -25} {2, -18} {3, -17} {4, -9} {5, -15}",
+                        Console.WriteLine("{0, -5} {1, -25} {2, -17} {3, -18} {4, -10} {5, -15}",
                                           nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
                     }
                 }
@@ -636,14 +681,18 @@ namespace Duancuoiki
             {
                 //Hiển thị tiêu đề cột
                 List<NhanVien> listNV = DocFile.FileDoc();
+                //đổi tiêu đề thành màu đỏ
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}",
                       "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
-                // hiển thị danh sách nhân viên nhân viên
+                //hiển thị danh sách nhân viên nhân viên
+                //đổi chữ thành màu trắng
+                Console.ForegroundColor = ConsoleColor.White;
                 if (listNV != null && listNV.Count > 0)
                 {
                     foreach (NhanVien nv in listNV)
                     {
-                        Console.WriteLine("{0, -5} {1, -25} {2, -18} {3, -17} {4, -9} {5, -15}",
+                        Console.WriteLine("{0, -5} {1, -25} {2, -17} {3, -18} {4, -10} {5, -15}",
                                           nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
                     }
                 }
