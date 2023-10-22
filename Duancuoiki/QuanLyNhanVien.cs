@@ -266,6 +266,31 @@ namespace Duancuoiki
                         nv.PhuCap = 150000;
                         break;
                 }
+                //Thêm phòng ban 
+                Console.Write("Chọn phòng ban của người được thêm vào danh sách\n" +
+                    "   1.Phòng Nhân Sự\n" +
+                    "   2.Phòng Kế Toán\n" +
+                    "   3.Phòng Marketing\n" +
+                    "Mời nhập lựa chọn: ");
+                string Nhapluachon = Console.ReadLine() ?? "";
+                int SoLuaChon;
+                while (!int.TryParse(Nhapluachon, out SoLuaChon) || (SoLuaChon < 1 || SoLuaChon > 4))
+                {
+                    Console.Write("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                    nhapluachon = Console.ReadLine() ?? "";
+                }
+                switch (SoLuaChon)
+                {
+                    case 1:
+                        nv.PhongBan = "Phòng Nhân Sự";
+                        break;
+                    case 2:
+                        nv.PhongBan = "Phòng Kế Toán";
+                        break;
+                    case 3:
+                        nv.PhongBan = "Phòng Marketing";
+                        break;
+                }
                 //lưu file
                 DocFile.FileLuu(nv);
             }
@@ -385,6 +410,35 @@ namespace Duancuoiki
                             nv.PhuCap = 150000;
                             break;
                     }
+                    //Sua phong ban 
+                    Console.Write("Chọn phong ban của người được thêm vào danh sách\n" +
+                        "   1.Phong Nhan Su\n" +
+                        "   2.Phong Ke Toan\n" +
+                        "   3.Phong Marketing\n" +
+                        "   4.Giữ Nguyên\n" +
+                        "Mời nhập lựa chọn: ");
+                    string Nhapluachon = Console.ReadLine() ?? "";
+                    int SoLuaChon;
+                    while (!int.TryParse(Nhapluachon, out SoLuaChon) || (SoLuaChon < 1 || SoLuaChon > 4))
+                    {
+                        Console.Write("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                        Nhapluachon = Console.ReadLine() ?? "";
+                    }
+                    switch (SoLuaChon)
+                    {
+                        case 1:
+                            nv.PhongBan = "Phòng Nhân Sự";
+                            break;
+                        case 2:
+                            nv.PhongBan = "Phòng Kế Toán";
+                            break;
+                        case 3:
+                            nv.PhongBan = "Phòng Marketing";
+                            break;
+                        case 4:
+                            Console.WriteLine("Giữ nguyên Phòng ban của nhân viên này");
+                            break;
+                    }
                     List<NhanVien> listNV = DocFile.FileDoc();
                     //lưu từng phần tử vào file
                     foreach (NhanVien nhanvien in listNV)
@@ -399,6 +453,7 @@ namespace Duancuoiki
                             nhanvien.TienThuong = nv.TienThuong;
                             nhanvien.PhuCap = nv.PhuCap;
                             nhanvien.ChucVu = nv.ChucVu;
+                            nhanvien.PhongBan = nv.PhongBan;
                         }
                     }
                     //xóa tất cả dữ liệu trong file
@@ -408,6 +463,7 @@ namespace Duancuoiki
                     {
                         DocFile.FileLuu(nhanvien);
                     }
+                    
                     Console.WriteLine("\nNhân viên có ID = {0} cập nhật dữ liệu thành công", ID);
                 }
                 else
@@ -654,8 +710,8 @@ namespace Duancuoiki
                 //{0,-5} cột đầu tiên là cột 0 có độ rộng là 5 và căn lề trái.
                 //đổi tiêu đề thành màu đỏ
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}",
-                      "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
+                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15} {6,-15}",
+                      "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ", "Phòng ban");
                 // hiển thị danh sách nhân viên nhân viên
                 //đổi chữ thành màu trắng
                 Console.ForegroundColor = ConsoleColor.White;
@@ -663,8 +719,8 @@ namespace Duancuoiki
                 {
                     foreach (NhanVien nv in listNV)
                     {
-                        Console.WriteLine("{0, -5} {1, -25} {2, -17} {3, -18} {4, -10} {5, -15}",
-                                          nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
+                        Console.WriteLine("{0, -5} {1, -25} {2, -17} {3, -18} {4, -10} {5, -15} {6,-15}",
+                                          nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu, nv.PhongBan);
                     }
                 }
                 Console.WriteLine();
@@ -684,8 +740,8 @@ namespace Duancuoiki
                 List<NhanVien> listNV = DocFile.FileDoc();
                 //đổi tiêu đề thành màu đỏ
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}",
-                      "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ");
+                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15} {6,-15}",
+                      "ID", "Họ tên", "Ngày Sinh", "Lương cơ bản", "Số ngày công", "Chức vụ", "Phòng ban");
                 //hiển thị danh sách nhân viên nhân viên
                 //đổi chữ thành màu trắng
                 Console.ForegroundColor = ConsoleColor.White;
@@ -693,8 +749,8 @@ namespace Duancuoiki
                 {
                     foreach (NhanVien nv in listNV)
                     {
-                        Console.WriteLine("{0, -5} {1, -25} {2, -17} {3, -18} {4, -10} {5, -15}",
-                                          nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu);
+                        Console.WriteLine("{0, -5} {1, -25} {2, -17} {3, -18} {4, -10} {5, -15} {6,-15}",
+                                          nv.ID, nv.HoTen, nv.NgaySinh, nv.LuongCoBan, nv.SoNgayCong, nv.ChucVu, nv.PhongBan);
                     }
                 }
                 Console.WriteLine();
@@ -703,6 +759,38 @@ namespace Duancuoiki
             {
                 Console.WriteLine(e.StackTrace);
             }
+        }
+        // Hàm tìm kiếm theo phòng ban
+        public List<NhanVien> TimKiemPhongBan(int id)
+        {
+        // Tạo một Danh sách người dùng trả về hợp lệ
+            List<NhanVien> searchResult = new List<NhanVien>();
+            List<NhanVien> listNV = DocFile.FileDoc();
+            if (id == 1) //Phòng Nhân Sự
+            {
+                foreach (NhanVien nv in listNV)
+                {
+                    if (nv.PhongBan == "Phòng Nhân Sự")
+                        searchResult.Add(nv);
+                }
+            }
+            else if (id == 2) //Phòng Kế Toán
+            {
+                foreach (NhanVien nv in listNV)
+                {
+                    if (nv.PhongBan == "Phòng Kế Toán")
+                        searchResult.Add(nv);
+                }
+            }
+            else //Phòng Marketing
+            {
+                foreach (NhanVien nv in listNV)
+                {
+                    if (nv.PhongBan == "Phòng Marketing")
+                        searchResult.Add(nv);
+                }
+            }
+            return searchResult;
         }
     }
 }

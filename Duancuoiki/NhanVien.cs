@@ -10,5 +10,6 @@
         public string ChucVu { get; set; }
         public int PhuCap { get; set; }
         public int TienThuong { get; set; }
+        public string PhongBan { get; set; }
     }
 }

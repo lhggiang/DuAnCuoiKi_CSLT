@@ -18,6 +18,7 @@ class Program
                 {0, 1, 2, 3 },
                 {4, 5, 6, 7 },
                 {8, 9, 10, 11 },
+                {12, 13, 14, 15 }
             };
         //dùng vòng lặp while (true) lặp đến khi nào người dùng nhấn phím 0 thì sẽ thoát chương trình
         while (true)
@@ -41,8 +42,10 @@ class Program
             Console.WriteLine($"**  {A[1,3]}. Sắp xếp nhân viên theo ID.                    **"); //7
             Console.WriteLine($"**  {A[2,0]}. Sắp xếp nhân viên theo tên.                   **"); //8
             Console.WriteLine($"**  {A[2,1]}. In ra tổng số lượng nhân viên.                **"); //9
-            Console.WriteLine($"** {A[2,2]}. Hiển thị danh sách nhân viên.                 **"); //10
-            Console.WriteLine($"** {A[2,3]}. Tính lương tháng nhân viên theo ID            **"); //11
+            Console.WriteLine($"**  {A[2,2]}. Hiển thị danh sách nhân viên.                **"); //10
+            Console.WriteLine($"**  {A[2,3]}. Tính lương tháng nhân viên theo ID           **"); //11
+            Console.WriteLine($"**  {A[3,0]}. Tìm kiếm nhân viên theo phòng ban            **"); //12
+            Console.WriteLine($"**  {A[3,1]}. In ra số lượng nhân viên theo phòng ban      **"); //13
             //thoát chương trình
             Console.WriteLine($"**  {A[0,0]}. Thoát chương trình.                           **"); //0
             //dùng vòng for lồng nhau để in ra dấu *
@@ -237,7 +240,58 @@ class Program
                         Console.WriteLine("\nDanh sách nhân viên trống!");
                     }
                     break;
+                case 12:
+                    if (quanLyNhanVien.SoLuongNhanVien() > 0)
+                    {
+                        Console.WriteLine("\n12.Thống kê nhân viên theo phòng ban ");
+                        Console.Write("Chọn phong ban của người được thêm vào danh sách\n" +
+                    "   1.Phòng Nhân Sự\n" +
+                    "   2.Phong Kế Toán\n" +
+                    "   3.Phòng Marketing\n" +
+                    "Mời nhập lựa chọn: ");
+                        string Nhapluachon = Console.ReadLine();
+                        int SoLuaChon;
+                        while (!int.TryParse(Nhapluachon, out SoLuaChon) || (SoLuaChon < 1 || SoLuaChon > 4))
+                        {
+                            Console.Write("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                            Nhapluachon = Console.ReadLine() ?? "";
+                        }
+                        List<NhanVien> result = quanLyNhanVien.TimKiemPhongBan(SoLuaChon);
+                        quanLyNhanVien.HienThiNhanVien(result);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
+                    }
+                    break;
+                case 13:
+                    if (quanLyNhanVien.SoLuongNhanVien() > 0)
+                    {
+                        Console.WriteLine("\n12.Thống kê nhân viên theo phòng ban ");
+                        Console.Write("Chọn phong ban của người được thêm vào danh sách\n" +
+                    "   1.Phòng Nhân Sự\n" +
+                    "   2.Phòng Kế Toán\n" +
+                    "   3.Phòng Marketing\n" +
+                    "Mời nhập lựa chọn: ");
+                        string Nhapluachon = Console.ReadLine();
+                        int SoLuaChon;
+                        while (!int.TryParse(Nhapluachon, out SoLuaChon) || (SoLuaChon < 1 || SoLuaChon > 4))
+                        {
+                            Console.Write("Vui lòng nhập lại lựa chọn là số có giá trị từ 1 - 4: ");
+                            Nhapluachon = Console.ReadLine() ?? "";
+                        }
 
+                        List<NhanVien> result = quanLyNhanVien.TimKiemPhongBan(SoLuaChon);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Tổng số nhân viên của Phòng Ban này là: " + result.Count);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        quanLyNhanVien.HienThiNhanVien(result);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nDanh sách nhân viên trống!");
+                    }
+                    break;
                 case 0:
                     Console.WriteLine("\nBạn đã chọn thoát chương trình!");
                     return;

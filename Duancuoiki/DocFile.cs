@@ -19,25 +19,8 @@ namespace Duancuoiki
                 using (streamWriter)
                 {
                     //chuẩn hóa để lưu vào file, các phần tử phân cách nhau bởi dấu ;
-                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu + ";" + nv.PhongBan;
                     //ghi từng dòng vào file
-                    streamWriter.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.StackTrace);
-            }
-        }
-        public static void FileCapNhat(NhanVien nv)
-        {
-            try
-            {
-                //giá trị false: không có ghi đè
-                StreamWriter streamWriter = new StreamWriter("data.txt", false, Encoding.UTF8);
-                using (streamWriter)
-                {
-                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
                     streamWriter.WriteLine(line);
                 }
             }
@@ -53,7 +36,7 @@ namespace Duancuoiki
                 StreamWriter streamWriter = new StreamWriter("sorted_data.txt", true, Encoding.UTF8);
                 using (streamWriter)
                 {
-                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu;
+                    string line = nv.ID + ";" + nv.HoTen + ";" + nv.NgaySinh + ";" + nv.LuongCoBan + ";" + nv.SoNgayCong + ";" + nv.TienThuong + ";" + nv.PhuCap + ";" + nv.ChucVu + ";" + nv.PhongBan;
                     streamWriter.WriteLine(line);
                 }
             }
@@ -79,8 +62,8 @@ namespace Duancuoiki
                     {
                         //tách chuỗi string ra
                         string[] arr = line.Split(";");
-                        //nếu mảng có đủ 8 phần tử sẽ lưu vào đối tượng Nhân Viên
-                        if (arr.Length == 8)
+                        //nếu mảng có đủ 9 phần tử sẽ lưu vào đối tượng Nhân Viên
+                        if (arr.Length == 9)
                         {
                             NhanVien nv = new NhanVien();
                             nv.ID = int.Parse(arr[0]);
@@ -91,6 +74,7 @@ namespace Duancuoiki
                             nv.TienThuong = int.Parse(arr[5]);
                             nv.PhuCap = int.Parse(arr[6]);
                             nv.ChucVu = arr[7];
+                            nv.PhongBan = arr[8];
                             //thêm đối tượng Nhân Viên vào list
                             dsnv.Add(nv);
                         }

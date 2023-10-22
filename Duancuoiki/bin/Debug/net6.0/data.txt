@@ -1,5 +1,7 @@
-﻿1;Nguyễn Hoàng Giang;03/10/2001;100000;25;20000;250000;Giám đốc
-2;Cao Minh Lâm;12/02/2001;100000;20;0;150000;Nhân viên
-3;La Hoàng Giang;04/02/2004;120000;30;24000;180000;Trưởng phòng
-4;Hà Anh Duy;19/10/2023;150000;15;0;150000;Nhân viên
-5;Hà Phương Nhi;15/01/2013;120000;5;0;200000;Phó giám đốc
+﻿1;Nguyễn Hoàng Giang;03/10/2001;100000;25;20000;250000;Giám đốc;Phòng Nhân Sự
+2;Cao Minh Lâm;12/02/2001;100000;20;0;150000;Nhân viên;Phòng Marketing
+3;La Hoàng Giang;04/02/2004;120000;30;24000;150000;Nhân viên;Phòng Marketing
+4;Hà Anh Duy;19/10/2023;150000;15;0;150000;Nhân viên;Phòng Kế Toán
+6;Nguyễn Mỹ Anh;04/02/2004;100000;25;20000;150000;Nhân viên;Phòng Marketing
+7;Minh Anh;12/02/2004;12000;10;0;200000;Phó giám đốc;Phòng Kế Toán
+8;Nguyễn Minh Lâm;12/02/2004;10000;15;0;150000;Nhân viên;Phòng Nhân Sự
